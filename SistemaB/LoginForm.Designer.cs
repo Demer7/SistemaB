@@ -1,0 +1,31 @@
+﻿namespace SistemaB
+{
+    partial class LoginForm
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // LoginForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(706, 473);
+            this.Name = "LoginForm";
+            this.Text = "Login";
+            this.ResumeLayout(false);
+
+        }
+    }
+}

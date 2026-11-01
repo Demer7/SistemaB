@@ -22,7 +22,7 @@ namespace SistemaB
         private Guna2Button btnVolver;
         private Guna2HtmlLabel lblTitulo, lblSubtitulo;
 
-        private string cadenaConexion = "Server=.\\SQLEXPRESS;Database=CherriesBloodDB;Trusted_Connection=True;";
+        string cadenaConexion = "Server=.\\SQLEXPRESS;Database=GestifyDB;Trusted_Connection=True;";
 
         // Variable para controlar el estado de Edición
         private string idClienteSeleccionado = null;
@@ -47,7 +47,7 @@ namespace SistemaB
             btnVolver.Size = new Size(150, 40);
             btnVolver.Location = new Point(30, 30);
             btnVolver.FillColor = Color.Transparent;
-            btnVolver.ForeColor = Color.FromArgb(91, 59, 115);
+            btnVolver.ForeColor = Color.FromArgb(64, 64, 64); // Gris oscuro neutro
             btnVolver.Font = new Font("Segoe UI Semibold", 11);
             btnVolver.Cursor = Cursors.Hand;
             btnVolver.Click += (s, e) => {
@@ -59,14 +59,14 @@ namespace SistemaB
 
             // TÍTULOS CENTRADOS
             lblTitulo = new Guna2HtmlLabel();
-            lblTitulo.Text = "<span style='font-family:Segoe UI Semibold; font-size:24pt; color:#5B3B73;'>Cherries Blood</span>";
+            lblTitulo.Text = "<span style='font-family:Segoe UI Semibold; font-size:24pt; color:#333333;'>Gestify</span>";
             this.Controls.Add(lblTitulo);
 
             lblSubtitulo = new Guna2HtmlLabel();
-            lblSubtitulo.Text = "<span style='font-family:Segoe UI; font-size:12pt; color:#7A5A95;'>Gestión de Clientes</span>";
+            lblSubtitulo.Text = "<span style='font-family:Segoe UI; font-size:12pt; color:#555555;'>Gestión de Clientes</span>";
             this.Controls.Add(lblSubtitulo);
 
-            //PANEL IZQUIERDO (Añadir/Editar Cliente)
+            // PANEL IZQUIERDO (Añadir/Editar Cliente)
             panelRegistro = new Guna2Panel();
             panelRegistro.Size = new Size(350, 550);
             panelRegistro.FillColor = Color.White;
@@ -101,7 +101,7 @@ namespace SistemaB
             btnAgregar.Size = new Size(310, 45);
             btnAgregar.Location = new Point(20, 480);
             btnAgregar.BorderRadius = 15;
-            btnAgregar.FillColor = Color.FromArgb(91, 59, 115);
+            btnAgregar.FillColor = Color.FromArgb(35, 35, 35); // Gris carbón
             btnAgregar.Font = new Font("Segoe UI Semibold", 12);
             btnAgregar.ShadowDecoration.Enabled = false;
             btnAgregar.Cursor = Cursors.Hand;
@@ -175,7 +175,7 @@ namespace SistemaB
 
                             idClienteSeleccionado = null;
                             btnAgregar.Text = "+ Agregar";
-                            btnAgregar.FillColor = Color.FromArgb(91, 59, 115);
+                            btnAgregar.FillColor = Color.FromArgb(35, 35, 35); // Restablecer a gris carbón
 
                             CargarClientes();
                         }
@@ -188,7 +188,7 @@ namespace SistemaB
             };
             panelRegistro.Controls.Add(btnAgregar);
 
-            //  PANEL DERECHO
+            // PANEL DERECHO
             panelLista = new Guna2Panel();
             panelLista.Size = new Size(750, 550);
             panelLista.FillColor = Color.White;
@@ -219,12 +219,13 @@ namespace SistemaB
             dgClientes.BorderStyle = BorderStyle.None;
             dgClientes.ColumnHeadersHeight = 40;
 
+            // Estilo neutro para la tabla
             dgClientes.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.Default;
             dgClientes.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgClientes.ThemeStyle.HeaderStyle.BackColor = Color.White;
-            dgClientes.ThemeStyle.HeaderStyle.ForeColor = Color.Black;
+            dgClientes.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(242, 242, 242);
+            dgClientes.ThemeStyle.HeaderStyle.ForeColor = Color.DimGray;
             dgClientes.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI Semibold", 10, FontStyle.Bold);
-            dgClientes.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(242, 242, 242);
+            dgClientes.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(230, 230, 230);
             dgClientes.ThemeStyle.RowsStyle.SelectionForeColor = Color.Black;
             dgClientes.RowHeadersVisible = false;
 
@@ -247,9 +248,9 @@ namespace SistemaB
             colEditar.UseColumnTextForButtonValue = true;
             colEditar.Width = 60;
             colEditar.FlatStyle = FlatStyle.Flat;
-            colEditar.DefaultCellStyle.BackColor = Color.FromArgb(91, 59, 115);
+            colEditar.DefaultCellStyle.BackColor = Color.FromArgb(64, 64, 64);
             colEditar.DefaultCellStyle.ForeColor = Color.White;
-            colEditar.DefaultCellStyle.SelectionBackColor = Color.FromArgb(91, 59, 115);
+            colEditar.DefaultCellStyle.SelectionBackColor = Color.FromArgb(35, 35, 35);
             colEditar.DefaultCellStyle.SelectionForeColor = Color.White;
             dgClientes.Columns.Add(colEditar);
 
@@ -261,25 +262,29 @@ namespace SistemaB
             colEliminar.UseColumnTextForButtonValue = true;
             colEliminar.Width = 60;
             colEliminar.FlatStyle = FlatStyle.Flat;
-            colEliminar.DefaultCellStyle.BackColor = Color.FromArgb(227, 110, 110);
+            colEliminar.DefaultCellStyle.BackColor = Color.FromArgb(100, 100, 100);
             colEliminar.DefaultCellStyle.ForeColor = Color.White;
-            colEliminar.DefaultCellStyle.SelectionBackColor = Color.FromArgb(227, 110, 110);
+            colEliminar.DefaultCellStyle.SelectionBackColor = Color.FromArgb(64, 64, 64);
             colEliminar.DefaultCellStyle.SelectionForeColor = Color.White;
             dgClientes.Columns.Add(colEliminar);
 
             dgClientes.CellContentClick += DgClientes_CellContentClick;
+
+            // Colores dinámicos neutros para las celdas
             dgClientes.CellFormatting += (s, e) => {
                 if (e.RowIndex < 0) return;
 
                 if (dgClientes.Columns[e.ColumnIndex].Name == "editar")
                 {
-                    e.CellStyle.BackColor = Color.FromArgb(91, 59, 115);
+                    e.CellStyle.BackColor = Color.FromArgb(64, 64, 64);
                     e.CellStyle.ForeColor = Color.White;
+                    e.CellStyle.SelectionBackColor = Color.FromArgb(35, 35, 35);
                 }
                 else if (dgClientes.Columns[e.ColumnIndex].Name == "eliminar")
                 {
-                    e.CellStyle.BackColor = Color.FromArgb(227, 110, 110);
+                    e.CellStyle.BackColor = Color.FromArgb(100, 100, 100);
                     e.CellStyle.ForeColor = Color.White;
+                    e.CellStyle.SelectionBackColor = Color.FromArgb(64, 64, 64);
                 }
             };
 
@@ -386,7 +391,7 @@ namespace SistemaB
                 txtNotas.Text = dgClientes.Rows[e.RowIndex].Cells["notas"].Value.ToString();
 
                 btnAgregar.Text = "✔ Guardar Cambios";
-                btnAgregar.FillColor = Color.FromArgb(74, 44, 96); 
+                btnAgregar.FillColor = Color.FromArgb(35, 35, 35); // Mantener el tono gris carbón en edición
 
                 MessageBox.Show("Los datos del cliente se cargaron en el panel izquierdo.\nModifica los campos y presiona 'Guardar Cambios'.",
                                 "Modo Edición Activo", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -396,8 +401,8 @@ namespace SistemaB
         private void CrearLabel(Guna2Panel p, string texto, int x, int y, bool esTitulo)
         {
             Guna2HtmlLabel lbl = new Guna2HtmlLabel();
-            lbl.Text = esTitulo ? $"<span style='font-family:Segoe UI Semibold; font-size:14pt; color:#333;'>{texto}</span>"
-                                : $"<span style='font-family:Segoe UI Semibold; font-size:10pt; color:#555;'>{texto}</span>";
+            lbl.Text = esTitulo ? $"<span style='font-family:Segoe UI Semibold; font-size:14pt; color:#333333;'>{texto}</span>"
+                                : $"<span style='font-family:Segoe UI Semibold; font-size:10pt; color:#555555;'>{texto}</span>";
             lbl.Location = new Point(x, y);
             p.Controls.Add(lbl);
         }

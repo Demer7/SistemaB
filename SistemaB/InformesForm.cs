@@ -9,7 +9,7 @@ namespace SistemaB
 {
     public partial class InformesForm : Form
     {
-        private string cadenaConexion = @"Server=.\SQLEXPRESS;Database=CherriesBloodDB;Trusted_Connection=True;";
+        string cadenaConexion = "Server=.\\SQLEXPRESS;Database=GestifyDB;Trusted_Connection=True;";
 
         // Componentes de Cabecera
         private Guna2Button btnVolver;
@@ -28,10 +28,10 @@ namespace SistemaB
         // Tabla de Datos
         private Guna2DataGridView dgvPedidos;
 
-        // Paleta de colores minimalista homologada
-        private Color colorMoradoOscuro = Color.FromArgb(91, 59, 115); // #5B3B73
-        private Color colorTextoOscuro = Color.FromArgb(36, 36, 36);   // #242424
-        private Color colorRojoBaja = Color.FromArgb(227, 110, 110);    // #E36E6E (Estilo ProductosForm)
+        // Paleta de colores minimalista neutra
+        private Color colorOscuroBase = Color.FromArgb(35, 35, 35); // Gris carbón principal
+        private Color colorTextoOscuro = Color.FromArgb(36, 36, 36);
+        private Color colorAccionBaja = Color.FromArgb(100, 100, 100); // Gris medio para eliminar
 
         public InformesForm()
         {
@@ -39,7 +39,7 @@ namespace SistemaB
             this.WindowState = FormWindowState.Maximized;
             this.FormBorderStyle = FormBorderStyle.None;
             this.BackColor = Color.FromArgb(242, 242, 242);
-            this.Text = "Cherries Blood - Informes y Analítica";
+            this.Text = "Gestify - Informes y Analítica";
 
             InitializeCustomComponents();
             CargarDatosDesdeBaseDatos();
@@ -57,7 +57,7 @@ namespace SistemaB
             btnVolver.Size = new Size(150, 40);
             btnVolver.Location = new Point(30, 30);
             btnVolver.FillColor = Color.Transparent;
-            btnVolver.ForeColor = colorMoradoOscuro;
+            btnVolver.ForeColor = Color.FromArgb(64, 64, 64); // Gris oscuro
             btnVolver.Font = new Font("Segoe UI Semibold", 11);
             btnVolver.Cursor = Cursors.Hand;
             btnVolver.Click += (s, e) => {
@@ -69,11 +69,11 @@ namespace SistemaB
 
             // ---- 2. TÍTULOS DE PANTALLA (Centrados dinámicamente) ----
             lblTitulo = new Guna2HtmlLabel();
-            lblTitulo.Text = "<span style='font-family:Segoe UI Semibold; font-size:24pt; color:#5B3B73;'>Cherries Blood</span>";
+            lblTitulo.Text = "<span style='font-family:Segoe UI Semibold; font-size:24pt; color:#333333;'>Gestify</span>";
             this.Controls.Add(lblTitulo);
 
             lblSubtitulo = new Guna2HtmlLabel();
-            lblSubtitulo.Text = "<span style='font-family:Segoe UI; font-size:12pt; color:#7A5A95;'>Gestión de Informes y Análisis</span>";
+            lblSubtitulo.Text = "<span style='font-family:Segoe UI; font-size:12pt; color:#555555;'>Gestión de Informes y Análisis</span>";
             this.Controls.Add(lblSubtitulo);
 
             // ---- 3. PANEL CONTENEDOR CENTRAL ----
@@ -94,7 +94,7 @@ namespace SistemaB
             Label lblPedidos = new Label();
             lblPedidos.Text = "Pedidos Activos";
             lblPedidos.Font = new Font("Segoe UI Semibold", 14);
-            lblPedidos.ForeColor = colorMoradoOscuro;
+            lblPedidos.ForeColor = colorOscuroBase; // Homologado a gris carbón
             lblPedidos.Location = new Point(0, 300);
             lblPedidos.AutoSize = true;
             mainPanel.Controls.Add(lblPedidos);
@@ -106,23 +106,22 @@ namespace SistemaB
             dgvPedidos.BorderStyle = BorderStyle.None;
             dgvPedidos.RowHeadersVisible = false;
             dgvPedidos.AllowUserToAddRows = false;
-            dgvPedidos.ReadOnly = false; // Permitir clics en la columna de botón
+            dgvPedidos.ReadOnly = false;
 
-            // Configuración base de columnas manuales para controlar el botón de borrado
+            // Configuración base de columnas
             dgvPedidos.Columns.Add("idVenta", "ID Venta");
             dgvPedidos.Columns.Add("cliente", "Cliente");
             dgvPedidos.Columns.Add("fechaVenta", "Fecha Venta");
             dgvPedidos.Columns.Add("fechaEntrega", "Fecha Entrega");
             dgvPedidos.Columns.Add("total", "Total");
 
-            // Propiedades de comportamiento y solo lectura de las celdas de datos
             dgvPedidos.Columns["idVenta"].Visible = false;
             dgvPedidos.Columns["cliente"].ReadOnly = true;
             dgvPedidos.Columns["fechaVenta"].ReadOnly = true;
             dgvPedidos.Columns["fechaEntrega"].ReadOnly = true;
             dgvPedidos.Columns["total"].ReadOnly = true;
 
-            // COLUMNA BOTÓN ELIMINAR (Estilo ProductosForm)
+            // COLUMNA BOTÓN ELIMINAR
             DataGridViewButtonColumn colEliminar = new DataGridViewButtonColumn();
             colEliminar.Name = "eliminar";
             colEliminar.HeaderText = "Acciones";
@@ -130,32 +129,30 @@ namespace SistemaB
             colEliminar.UseColumnTextForButtonValue = true;
             colEliminar.Width = 70;
             colEliminar.FlatStyle = FlatStyle.Flat;
-            colEliminar.DefaultCellStyle.BackColor = colorRojoBaja;
+            colEliminar.DefaultCellStyle.BackColor = colorAccionBaja;
             colEliminar.DefaultCellStyle.ForeColor = Color.White;
             dgvPedidos.Columns.Add(colEliminar);
 
-            // Manejador de clics del grid
             dgvPedidos.CellContentClick += DgvPedidos_CellContentClick;
 
-            // Formateo de color dinámico para el botón de celda
             dgvPedidos.CellFormatting += (s, e) => {
                 if (e.RowIndex < 0) return;
                 if (dgvPedidos.Columns[e.ColumnIndex].Name == "eliminar")
                 {
-                    e.CellStyle.BackColor = colorRojoBaja;
+                    e.CellStyle.BackColor = colorAccionBaja;
                     e.CellStyle.ForeColor = Color.White;
-                    e.CellStyle.SelectionBackColor = colorRojoBaja;
+                    e.CellStyle.SelectionBackColor = colorAccionBaja;
                     e.CellStyle.SelectionForeColor = Color.White;
                 }
             };
 
-            // Estilos visuales del DataGridView unificados
-            dgvPedidos.ThemeStyle.HeaderStyle.BackColor = Color.White;
-            dgvPedidos.ThemeStyle.HeaderStyle.ForeColor = Color.Black;
+            // Estilos visuales neutros del DataGridView
+            dgvPedidos.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(242, 242, 242);
+            dgvPedidos.ThemeStyle.HeaderStyle.ForeColor = Color.DimGray;
             dgvPedidos.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI Semibold", 10, FontStyle.Bold);
             dgvPedidos.ThemeStyle.RowsStyle.BackColor = Color.White;
             dgvPedidos.ThemeStyle.RowsStyle.ForeColor = colorTextoOscuro;
-            dgvPedidos.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(242, 242, 242);
+            dgvPedidos.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(230, 230, 230);
             dgvPedidos.ThemeStyle.RowsStyle.SelectionForeColor = Color.Black;
             dgvPedidos.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvPedidos.GridColor = Color.FromArgb(242, 242, 242);
@@ -164,26 +161,26 @@ namespace SistemaB
             mainPanel.Controls.Add(dgvPedidos);
         }
 
-        private void CrearTarjeta(string titulo, Point ubicacion, bool usarFondoMorado, out Label lblValorFoco)
+        private void CrearTarjeta(string titulo, Point ubicacion, bool usarFondoOscuro, out Label lblValorFoco)
         {
             Guna2Panel tarjeta = new Guna2Panel();
             tarjeta.Size = new Size(380, 110);
             tarjeta.Location = ubicacion;
             tarjeta.BorderRadius = 15;
-            tarjeta.FillColor = usarFondoMorado ? colorMoradoOscuro : Color.White;
+            tarjeta.FillColor = usarFondoOscuro ? colorOscuroBase : Color.White;
 
             Label lblTituloTarjeta = new Label();
             lblTituloTarjeta.Text = titulo;
             lblTituloTarjeta.Font = new Font("Segoe UI", 9.5f, FontStyle.Regular);
-            lblTituloTarjeta.ForeColor = usarFondoMorado ? Color.FromArgb(200, 255, 255, 255) : Color.Gray;
+            lblTituloTarjeta.ForeColor = usarFondoOscuro ? Color.FromArgb(200, 255, 255, 255) : Color.Gray;
             lblTituloTarjeta.Location = new Point(20, 20);
             lblTituloTarjeta.AutoSize = true;
             lblTituloTarjeta.BackColor = Color.Transparent;
 
             lblValorFoco = new Label();
-            lblValorFoco.Text = usarFondoMorado ? "$0.00" : "0";
+            lblValorFoco.Text = usarFondoOscuro ? "$0.00" : "0";
             lblValorFoco.Font = new Font("Segoe UI", 22, FontStyle.Bold);
-            lblValorFoco.ForeColor = usarFondoMorado ? Color.White : colorTextoOscuro;
+            lblValorFoco.ForeColor = usarFondoOscuro ? Color.White : colorTextoOscuro;
             lblValorFoco.Location = new Point(20, 45);
             lblValorFoco.AutoSize = true;
             lblValorFoco.BackColor = Color.Transparent;
@@ -198,7 +195,6 @@ namespace SistemaB
         {
             if (e.RowIndex < 0) return;
 
-            // Validar si hicieron clic estrictamente en la columna del bote de basura
             if (dgvPedidos.Columns[e.ColumnIndex].Name == "eliminar")
             {
                 string idVenta = dgvPedidos.Rows[e.RowIndex].Cells["idVenta"].Value.ToString();
@@ -226,7 +222,6 @@ namespace SistemaB
 
                 try
                 {
-                    // 1. Eliminar primero los hijos en DetallesVentas (Evita error de Foreign Key)
                     string queryDetalles = "DELETE FROM DetallesVentas WHERE IdVenta = @idVenta";
                     using (SqlCommand cmdDetalles = new SqlCommand(queryDetalles, conexion, transaccion))
                     {
@@ -234,7 +229,6 @@ namespace SistemaB
                         cmdDetalles.ExecuteNonQuery();
                     }
 
-                    // 2. Eliminar el registro padre en Ventas
                     string queryVenta = "DELETE FROM Ventas WHERE IdVenta = @idVenta";
                     using (SqlCommand cmdVenta = new SqlCommand(queryVenta, conexion, transaccion))
                     {
@@ -242,12 +236,8 @@ namespace SistemaB
                         cmdVenta.ExecuteNonQuery();
                     }
 
-                    // Confirmar cambios en la base de datos de manera atómica
                     transaccion.Commit();
-
                     MessageBox.Show("El pedido ha sido removido y las métricas actualizadas con éxito.", "Pedido Eliminado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Recargar toda la interfaz para actualizar los KPI de las tarjetas y refrescar la tabla
                     CargarDatosDesdeBaseDatos();
                 }
                 catch (Exception ex)
@@ -279,7 +269,6 @@ namespace SistemaB
                 {
                     conexion.Open();
 
-                    // Actualizar KPI de Tarjetas
                     string queryVentas = "SELECT ISNULL(SUM(Total), 0) FROM Ventas";
                     using (SqlCommand cmd = new SqlCommand(queryVentas, conexion))
                     {
@@ -304,7 +293,6 @@ namespace SistemaB
                         lblClientesValor.Text = Convert.ToInt32(cmd.ExecuteScalar()).ToString();
                     }
 
-                    // Limpiar y repoblar el GridView manualmente mapeando los campos del query
                     dgvPedidos.Rows.Clear();
 
                     string queryGrid = @"

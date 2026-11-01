@@ -133,6 +133,16 @@ namespace SistemaB.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap icon_settings {
+            get {
+                object obj = ResourceManager.GetObject("icon_settings", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap Icon_user {
             get {
                 object obj = ResourceManager.GetObject("Icon_user", resourceCulture);

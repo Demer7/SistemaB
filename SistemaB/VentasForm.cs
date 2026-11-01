@@ -3,20 +3,20 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
-using Guna.UI2.WinForms; // Asegúrate de tener la referencia de Guna.UI2 instalada
+using Guna.UI2.WinForms;
 
 namespace SistemaB
 {
     public partial class VentasForm : Form
     {
         // Cadena de conexión corregida y validada para tu SQLEXPRESS
-        private string conexionString = "Server=.\\SQLEXPRESS;Database=CherriesBloodDB;Trusted_Connection=True;";
+        string cadenaConexion = "Server=.\\SQLEXPRESS;Database=GestifyDB;Trusted_Connection=True;";
 
         // Tabla en memoria para el carrito de compras
         private DataTable dtCarrito;
 
         #region Declaración de Componentes de Interfaz (Guna.UI2)
-        // Cabecera y Navegación (Estilo ProductosForm)
+        // Cabecera y Navegación
         private Guna2Button btnVolver;
         private Guna2HtmlLabel lblTitulo;
         private Guna2HtmlLabel lblSubtitulo;
@@ -54,11 +54,11 @@ namespace SistemaB
 
         public VentasForm()
         {
-            // CONFIGURACIÓN DE PANTALLA COMPLETA (Igual que ProductosForm)
+            // CONFIGURACIÓN DE PANTALLA COMPLETA
             this.WindowState = FormWindowState.Maximized;
             this.FormBorderStyle = FormBorderStyle.None;
-            this.BackColor = Color.FromArgb(242, 242, 242); // Gris claro Figma unificado
-            this.Text = "Cherries Blood - Módulo de Ventas";
+            this.BackColor = Color.FromArgb(242, 242, 242); // Gris claro unificado
+            this.Text = "Gestify - Módulo de Ventas";
 
             // 1. Construir la interfaz gráficamente desde código
             ConstruirInterfazGrafica();
@@ -75,10 +75,10 @@ namespace SistemaB
 
         private void ConstruirInterfazGrafica()
         {
-            // Colores de la paleta minimalista
-            Color moradoPrincipal = Color.FromArgb(91, 59, 115); // #5B3B73 (Homologado con productos)
-            Color verdeGanancia = Color.FromArgb(78, 159, 109);   // #4E9F6D
-            Color textoOscuro = Color.FromArgb(36, 36, 36);       // #242424
+            // Colores de la paleta minimalista (Neutralizada)
+            Color colorPrincipal = Color.FromArgb(35, 35, 35); // Gris carbón en reemplazo del morado
+            Color verdeGanancia = Color.FromArgb(78, 159, 109);   // Se mantiene para el indicador de dinero
+            Color textoOscuro = Color.FromArgb(36, 36, 36);
 
             // ---- BOTÓN VOLVER (Top Izquierda) ----
             btnVolver = new Guna2Button();
@@ -86,7 +86,7 @@ namespace SistemaB
             btnVolver.Size = new Size(150, 40);
             btnVolver.Location = new Point(30, 30);
             btnVolver.FillColor = Color.Transparent;
-            btnVolver.ForeColor = moradoPrincipal;
+            btnVolver.ForeColor = Color.FromArgb(64, 64, 64); // Gris oscuro neutro
             btnVolver.Font = new Font("Segoe UI Semibold", 11);
             btnVolver.Cursor = Cursors.Hand;
             btnVolver.Click += (s, e) => {
@@ -98,11 +98,11 @@ namespace SistemaB
 
             // ---- TÍTULOS EN HTML (Se centran dinámicamente en CentrarTodo) ----
             lblTitulo = new Guna2HtmlLabel();
-            lblTitulo.Text = "<span style='font-family:Segoe UI Semibold; font-size:24pt; color:#5B3B73;'>Cherries Blood</span>";
+            lblTitulo.Text = "<span style='font-family:Segoe UI Semibold; font-size:24pt; color:#333333;'>Gestify</span>";
             this.Controls.Add(lblTitulo);
 
             lblSubtitulo = new Guna2HtmlLabel();
-            lblSubtitulo.Text = "<span style='font-family:Segoe UI; font-size:12pt; color:#7A5A95;'>Gestión de Ventas y Pedidos</span>";
+            lblSubtitulo.Text = "<span style='font-family:Segoe UI; font-size:12pt; color:#555555;'>Gestión de Ventas y Pedidos</span>";
             this.Controls.Add(lblSubtitulo);
 
             // ---- PANEL IZQUIERDO: CONTROLES DE ENTRADA ----
@@ -124,7 +124,7 @@ namespace SistemaB
             lblLabelCantidad = new Label { Text = "Cant.", Location = new Point(20, 355), Size = new Size(70, 18), Font = new Font("Segoe UI Semibold", 10), ForeColor = textoOscuro, BackColor = Color.White };
             txtCantidad = new Guna2TextBox { Location = new Point(20, 378), Size = new Size(110, 36), BorderRadius = 8, FillColor = Color.FromArgb(242, 242, 242), BorderThickness = 0, PlaceholderText = "0" };
 
-            btnAgregar = new Guna2Button { Text = "+ Agregar", Location = new Point(145, 378), Size = new Size(175, 36), BorderRadius = 8, FillColor = moradoPrincipal, ForeColor = Color.White, Font = new Font("Segoe UI Semibold", 11), Cursor = Cursors.Hand };
+            btnAgregar = new Guna2Button { Text = "+ Agregar", Location = new Point(145, 378), Size = new Size(175, 36), BorderRadius = 8, FillColor = colorPrincipal, ForeColor = Color.White, Font = new Font("Segoe UI Semibold", 11), Cursor = Cursors.Hand };
             btnAgregar.Click += new EventHandler(btnAgregar_Click);
 
             panelControles.Controls.AddRange(new Control[] { lblLabelCliente, cmbCliente, lblLabelFechaVenta, dtpFechaVenta, lblLabelFechaEntrega, dtpFechaEntrega, lblLabelProducto, cmbProducto, lblLabelCantidad, txtCantidad, btnAgregar });
@@ -139,11 +139,13 @@ namespace SistemaB
                 RowHeadersVisible = false,
                 AllowUserToAddRows = false
             };
-            dgvDetalles.ThemeStyle.HeaderStyle.BackColor = Color.White;
-            dgvDetalles.ThemeStyle.HeaderStyle.ForeColor = Color.Black;
+
+            // Estilo neutro de tabla homologado con otras pantallas
+            dgvDetalles.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(242, 242, 242);
+            dgvDetalles.ThemeStyle.HeaderStyle.ForeColor = Color.DimGray;
             dgvDetalles.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI Semibold", 10, FontStyle.Bold);
             dgvDetalles.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 10);
-            dgvDetalles.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(242, 242, 242);
+            dgvDetalles.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(230, 230, 230);
             dgvDetalles.ThemeStyle.RowsStyle.SelectionForeColor = Color.Black;
             this.Controls.Add(dgvDetalles);
 
@@ -157,36 +159,28 @@ namespace SistemaB
             lblTextoGanancia = new Label { Text = "GANANCIA ESTIMADA", Location = new Point(230, 25), Size = new Size(150, 20), Font = new Font("Segoe UI Semibold", 10, FontStyle.Bold), ForeColor = Color.Gray, BackColor = Color.White };
             lblGananciaEstimada = new Label { Text = "$0.00", Location = new Point(230, 55), Size = new Size(180, 45), Font = new Font("Segoe UI", 24, FontStyle.Bold), ForeColor = verdeGanancia, BackColor = Color.White };
 
-            btnCompletarVenta = new Guna2Button { Text = "Completar Venta", Location = new Point(440, 45), Size = new Size(190, 50), BorderRadius = 10, FillColor = moradoPrincipal, ForeColor = Color.White, Font = new Font("Segoe UI Semibold", 11, FontStyle.Bold), Cursor = Cursors.Hand };
+            btnCompletarVenta = new Guna2Button { Text = "Completar Venta", Location = new Point(440, 45), Size = new Size(190, 50), BorderRadius = 10, FillColor = colorPrincipal, ForeColor = Color.White, Font = new Font("Segoe UI Semibold", 11, FontStyle.Bold), Cursor = Cursors.Hand };
             btnCompletarVenta.Click += new EventHandler(btnCompletarVenta_Click);
 
             panelTotales.Controls.AddRange(new Control[] { lblTextoTotal, lblTotal, lblTextoGanancia, lblGananciaEstimada, btnCompletarVenta });
         }
 
-        // ---- RESPONSIVIDAD Y CENTRADO DINÁMICO (Estilo ProductosForm) ----
+        // ---- RESPONSIVIDAD Y CENTRADO DINÁMICO ----
         private void CentrarTodo()
         {
-            // Prevenir errores si se dispara el redimensionamiento antes de crear los objetos
             if (lblTitulo == null || panelControles == null || dgvDetalles == null || panelTotales == null) return;
 
-            // Centrar Título y Subtítulo arriba
             lblTitulo.Location = new Point((this.ClientSize.Width - lblTitulo.Width) / 2, 40);
             lblSubtitulo.Location = new Point((this.ClientSize.Width - lblSubtitulo.Width) / 2, 85);
 
-            // Calcular distribución de bloques de datos
-            int gap = 30; // Espaciado entre la columna izquierda y derecha
-            int totalWidth = panelControles.Width + dgvDetalles.Width + gap; // 340 + 660 + 30 = 1030px total
+            int gap = 30;
+            int totalWidth = panelControles.Width + dgvDetalles.Width + gap;
 
             int startX = (this.ClientSize.Width - totalWidth) / 2;
-            int startY = 140; // Altura donde comienzan las tarjetas contenedoras
+            int startY = 140;
 
-            // Posicionar Panel de Controles (Izquierda)
             panelControles.Location = new Point(startX, startY);
-
-            // Posicionar DataGridView (Derecha Arriba)
             dgvDetalles.Location = new Point(startX + panelControles.Width + gap, startY);
-
-            // Posicionar Panel de Totales (Derecha Abajo - con un espacio de 20px bajo el DataGridView)
             panelTotales.Location = new Point(startX + panelControles.Width + gap, startY + dgvDetalles.Height + 20);
         }
 
@@ -210,7 +204,7 @@ namespace SistemaB
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(conexionString))
+                using (SqlConnection con = new SqlConnection(cadenaConexion))
                 {
                     string query = "SELECT Id, Nombre FROM Clientes";
                     SqlDataAdapter da = new SqlDataAdapter(query, con);
@@ -233,7 +227,7 @@ namespace SistemaB
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(conexionString))
+                using (SqlConnection con = new SqlConnection(cadenaConexion))
                 {
                     string query = "SELECT Id, Nombre, PrecioVenta, CostoEstimado FROM Productos";
                     SqlDataAdapter da = new SqlDataAdapter(query, con);
@@ -342,7 +336,7 @@ namespace SistemaB
                 gananciaTotal += Convert.ToDecimal(r["Ganancia"]);
             }
 
-            using (SqlConnection con = new SqlConnection(conexionString))
+            using (SqlConnection con = new SqlConnection(cadenaConexion))
             {
                 con.Open();
                 SqlTransaction transaccion = con.BeginTransaction();

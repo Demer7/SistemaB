@@ -72,6 +72,9 @@
     <Compile Include="Cerrar_Ses.Designer.cs">
       <DependentUpon>Cerrar_Ses.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\ConfiguracionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="VentasForm.cs">
       <SubType>Form</SubType>
     </Compile>

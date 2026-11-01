@@ -22,7 +22,7 @@ namespace SistemaB
         private Guna2Button btnVolver;
         private Guna2HtmlLabel lblTitulo, lblSubtitulo;
 
-        private string cadenaConexion = "Server=.\\SQLEXPRESS;Database=CherriesBloodDB;Trusted_Connection=True;";
+        string cadenaConexion = "Server=.\\SQLEXPRESS;Database=GestifyDB;Trusted_Connection=True;";
         private int idEditando = -1; // -1 = Nuevo registro, cualquier otro número = Editando ID
 
         public InventarioForm()
@@ -39,13 +39,13 @@ namespace SistemaB
 
         private void ConfigurarInterfaz()
         {
-            //BOTÓN VOLVER
+            // BOTÓN VOLVER
             btnVolver = new Guna2Button();
             btnVolver.Text = "← Volver al Menú";
             btnVolver.Size = new Size(150, 40);
             btnVolver.Location = new Point(30, 30);
             btnVolver.FillColor = Color.Transparent;
-            btnVolver.ForeColor = Color.FromArgb(91, 59, 115);
+            btnVolver.ForeColor = Color.FromArgb(64, 64, 64); // Gris oscuro en lugar de morado
             btnVolver.Font = new Font("Segoe UI Semibold", 11);
             btnVolver.Cursor = Cursors.Hand;
             btnVolver.Click += (s, e) => {
@@ -55,16 +55,16 @@ namespace SistemaB
             };
             this.Controls.Add(btnVolver);
 
-            //  TÍTULOS
+            // TÍTULOS
             lblTitulo = new Guna2HtmlLabel();
-            lblTitulo.Text = "<span style='font-family:Segoe UI Semibold; font-size:24pt; color:#5B3B73;'>Cherries Blood</span>";
+            lblTitulo.Text = "<span style='font-family:Segoe UI Semibold; font-size:24pt; color:#333333;'>Gestify</span>";
             this.Controls.Add(lblTitulo);
 
             lblSubtitulo = new Guna2HtmlLabel();
-            lblSubtitulo.Text = "<span style='font-family:Segoe UI; font-size:12pt; color:#7A5A95;'>Gestión de Inventarios</span>";
+            lblSubtitulo.Text = "<span style='font-family:Segoe UI; font-size:12pt; color:#555555;'>Gestión de Inventarios</span>";
             this.Controls.Add(lblSubtitulo);
 
-            //  PANEL IZQUIERDO (Añadir Artículo)
+            // PANEL IZQUIERDO (Añadir Artículo)
             panelRegistro = new Guna2Panel();
             panelRegistro.Size = new Size(350, 500);
             panelRegistro.FillColor = Color.White;
@@ -110,7 +110,7 @@ namespace SistemaB
             btnAgregar.Size = new Size(310, 45);
             btnAgregar.Location = new Point(20, 420);
             btnAgregar.BorderRadius = 15;
-            btnAgregar.FillColor = Color.FromArgb(91, 59, 115);
+            btnAgregar.FillColor = Color.FromArgb(35, 35, 35); // Gris carbón
             btnAgregar.Font = new Font("Segoe UI Semibold", 12);
             btnAgregar.ShadowDecoration.Enabled = false;
             btnAgregar.Click += BtnAgregar_Click;
@@ -133,12 +133,12 @@ namespace SistemaB
             dgInventario.BorderStyle = BorderStyle.None;
             dgInventario.ColumnHeadersHeight = 40;
 
-            // Paleta de colores de la cabecera
+            // Paleta de colores de la cabecera neutral
             dgInventario.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(242, 242, 242);
             dgInventario.ThemeStyle.HeaderStyle.ForeColor = Color.DimGray;
             dgInventario.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI Semibold", 10);
             dgInventario.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgInventario.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(238, 235, 241);
+            dgInventario.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(230, 230, 230); // Gris claro para selección
             dgInventario.ThemeStyle.RowsStyle.SelectionForeColor = Color.Black;
             dgInventario.RowHeadersVisible = false;
 
@@ -182,17 +182,16 @@ namespace SistemaB
 
                 if (dgInventario.Columns[e.ColumnIndex].Name == "editar")
                 {
-                    e.CellStyle.BackColor = Color.FromArgb(91, 59, 115);
+                    e.CellStyle.BackColor = Color.FromArgb(64, 64, 64); // Gris oscuro
                     e.CellStyle.ForeColor = Color.White;
-                    e.CellStyle.SelectionBackColor = Color.FromArgb(111, 79, 135);
+                    e.CellStyle.SelectionBackColor = Color.FromArgb(35, 35, 35);
                     e.CellStyle.SelectionForeColor = Color.White;
                 }
-
                 else if (dgInventario.Columns[e.ColumnIndex].Name == "eliminar")
                 {
-                    e.CellStyle.BackColor = Color.FromArgb(227, 110, 110);
+                    e.CellStyle.BackColor = Color.FromArgb(100, 100, 100); // Gris medio
                     e.CellStyle.ForeColor = Color.White;
-                    e.CellStyle.SelectionBackColor = Color.FromArgb(242, 130, 130);
+                    e.CellStyle.SelectionBackColor = Color.FromArgb(64, 64, 64);
                     e.CellStyle.SelectionForeColor = Color.White;
                 }
             };
@@ -368,8 +367,8 @@ namespace SistemaB
         private void CrearLabel(Guna2Panel p, string texto, int x, int y, bool esTitulo)
         {
             Guna2HtmlLabel lbl = new Guna2HtmlLabel();
-            lbl.Text = esTitulo ? $"<span style='font-family:Segoe UI Semibold; font-size:14pt; color:#333;'>{texto}</span>"
-                                : $"<span style='font-family:Segoe UI Semibold; font-size:10pt; color:#555;'>{texto}</span>";
+            lbl.Text = esTitulo ? $"<span style='font-family:Segoe UI Semibold; font-size:14pt; color:#333333;'>{texto}</span>"
+                                : $"<span style='font-family:Segoe UI Semibold; font-size:10pt; color:#555555;'>{texto}</span>";
             lbl.Location = new Point(x, y);
             p.Controls.Add(lbl);
         }

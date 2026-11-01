@@ -23,7 +23,7 @@ namespace SistemaB
         private Guna2HtmlLabel lblTitulo, lblSubtitulo;
 
         // Cadena de conexión de tu BD
-        private string cadenaConexion = "Server=.\\SQLEXPRESS;Database=CherriesBloodDB;Trusted_Connection=True;";
+        string cadenaConexion = "Server=.\\SQLEXPRESS;Database=GestifyDB;Trusted_Connection=True;";
 
         // Variable de control para el estado de edición
         private string idProductoSeleccionado = null;
@@ -48,7 +48,7 @@ namespace SistemaB
             btnVolver.Size = new Size(150, 40);
             btnVolver.Location = new Point(30, 30);
             btnVolver.FillColor = Color.Transparent;
-            btnVolver.ForeColor = Color.FromArgb(91, 59, 115);
+            btnVolver.ForeColor = Color.FromArgb(64, 64, 64); // Gris oscuro neutro
             btnVolver.Font = new Font("Segoe UI Semibold", 11);
             btnVolver.Cursor = Cursors.Hand;
             btnVolver.Click += (s, e) => {
@@ -60,11 +60,11 @@ namespace SistemaB
 
             // 2. TÍTULOS CENTRADOS
             lblTitulo = new Guna2HtmlLabel();
-            lblTitulo.Text = "<span style='font-family:Segoe UI Semibold; font-size:24pt; color:#5B3B73;'>Cherries Blood</span>";
+            lblTitulo.Text = "<span style='font-family:Segoe UI Semibold; font-size:24pt; color:#333333;'>Gestify</span>";
             this.Controls.Add(lblTitulo);
 
             lblSubtitulo = new Guna2HtmlLabel();
-            lblSubtitulo.Text = "<span style='font-family:Segoe UI; font-size:12pt; color:#7A5A95;'>Gestión de Productos</span>";
+            lblSubtitulo.Text = "<span style='font-family:Segoe UI; font-size:12pt; color:#555555;'>Gestión de Productos</span>";
             this.Controls.Add(lblSubtitulo);
 
             // 3. PANEL IZQUIERDO (Añadir / Editar Producto)
@@ -96,7 +96,7 @@ namespace SistemaB
             btnAgregar.Size = new Size(310, 45);
             btnAgregar.Location = new Point(20, 440);
             btnAgregar.BorderRadius = 15;
-            btnAgregar.FillColor = Color.FromArgb(91, 59, 115); // Morado original
+            btnAgregar.FillColor = Color.FromArgb(35, 35, 35); // Gris carbón
             btnAgregar.Font = new Font("Segoe UI Semibold", 12);
             btnAgregar.Cursor = Cursors.Hand;
             btnAgregar.Click += BtnAgregar_Click;
@@ -119,13 +119,13 @@ namespace SistemaB
             dgProductos.BorderStyle = BorderStyle.None;
             dgProductos.ColumnHeadersHeight = 40;
 
-            // Estilo Figma
+            // Estilo neutro para la tabla
             dgProductos.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.Default;
             dgProductos.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgProductos.ThemeStyle.HeaderStyle.BackColor = Color.White;
-            dgProductos.ThemeStyle.HeaderStyle.ForeColor = Color.Black;
+            dgProductos.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(242, 242, 242);
+            dgProductos.ThemeStyle.HeaderStyle.ForeColor = Color.DimGray;
             dgProductos.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI Semibold", 10, FontStyle.Bold);
-            dgProductos.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(242, 242, 242);
+            dgProductos.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(230, 230, 230);
             dgProductos.ThemeStyle.RowsStyle.SelectionForeColor = Color.Black;
             dgProductos.RowHeadersVisible = false;
 
@@ -147,7 +147,7 @@ namespace SistemaB
             colEditar.UseColumnTextForButtonValue = true;
             colEditar.Width = 60;
             colEditar.FlatStyle = FlatStyle.Flat;
-            colEditar.DefaultCellStyle.BackColor = Color.FromArgb(91, 59, 115);
+            colEditar.DefaultCellStyle.BackColor = Color.FromArgb(64, 64, 64);
             colEditar.DefaultCellStyle.ForeColor = Color.White;
             dgProductos.Columns.Add(colEditar);
 
@@ -159,7 +159,7 @@ namespace SistemaB
             colEliminar.UseColumnTextForButtonValue = true;
             colEliminar.Width = 60;
             colEliminar.FlatStyle = FlatStyle.Flat;
-            colEliminar.DefaultCellStyle.BackColor = Color.FromArgb(227, 110, 110);
+            colEliminar.DefaultCellStyle.BackColor = Color.FromArgb(100, 100, 100);
             colEliminar.DefaultCellStyle.ForeColor = Color.White;
             dgProductos.Columns.Add(colEliminar);
 
@@ -171,16 +171,16 @@ namespace SistemaB
 
                 if (dgProductos.Columns[e.ColumnIndex].Name == "editar")
                 {
-                    e.CellStyle.BackColor = Color.FromArgb(91, 59, 115);
+                    e.CellStyle.BackColor = Color.FromArgb(64, 64, 64);
                     e.CellStyle.ForeColor = Color.White;
-                    e.CellStyle.SelectionBackColor = Color.FromArgb(91, 59, 115);
+                    e.CellStyle.SelectionBackColor = Color.FromArgb(35, 35, 35);
                     e.CellStyle.SelectionForeColor = Color.White;
                 }
                 else if (dgProductos.Columns[e.ColumnIndex].Name == "eliminar")
                 {
-                    e.CellStyle.BackColor = Color.FromArgb(227, 110, 110);
+                    e.CellStyle.BackColor = Color.FromArgb(100, 100, 100);
                     e.CellStyle.ForeColor = Color.White;
-                    e.CellStyle.SelectionBackColor = Color.FromArgb(227, 110, 110);
+                    e.CellStyle.SelectionBackColor = Color.FromArgb(64, 64, 64);
                     e.CellStyle.SelectionForeColor = Color.White;
                 }
             };
@@ -242,7 +242,7 @@ namespace SistemaB
                             // Restaurar componentes a su estado original de inserción
                             idProductoSeleccionado = null;
                             btnAgregar.Text = "+ Agregar";
-                            btnAgregar.FillColor = Color.FromArgb(91, 59, 115);
+                            btnAgregar.FillColor = Color.FromArgb(35, 35, 35); // Regresa a gris carbón
 
                             LimpiarCampos();
                             CargarProductos();
@@ -389,9 +389,9 @@ namespace SistemaB
                 txtPrecioVenta.Text = precioLimpio;
                 txtCostoEstimado.Text = costoLimpio;
 
-                // Cambiar estética del botón a modo confirmación de edición (Azul Figma de Acción)
+                // Cambiar estética del botón a modo confirmación de edición
                 btnAgregar.Text = "✔ Guardar Cambios";
-                btnAgregar.FillColor = Color.FromArgb(91, 59, 115);
+                btnAgregar.FillColor = Color.FromArgb(35, 35, 35); // Mantiene el tono neutro oscuro
 
                 MessageBox.Show("Los datos del producto se cargaron en el panel izquierdo.\nEfectúa los cambios y haz clic en '✔ Guardar Cambios'.",
                                 "Modo Edición Activado", MessageBoxButtons.OK, MessageBoxIcon.Information);
